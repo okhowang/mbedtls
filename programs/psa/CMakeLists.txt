@@ -9,7 +9,7 @@ target_link_libraries(psa_constant_names mbedtls)
 
 add_custom_target(
     psa_constant_names_generated
-    COMMAND ${PYTHON_EXECUTABLE} scripts/generate_psa_constants.py
+    COMMAND ${MBEDTLS_PYTHON_EXECUTABLE} scripts/generate_psa_constants.py
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../
 )
 add_dependencies(psa_constant_names psa_constant_names_generated)
