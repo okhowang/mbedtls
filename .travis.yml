@@ -2,27 +2,27 @@ language: c
 compiler:
 - clang
 - gcc
+python:
+- "3.7"
 sudo: false
 cache: ccache
 
 script:
-- tests/scripts/recursion.pl library/*.c
-- tests/scripts/check-generated-files.sh
-- tests/scripts/check-doxy-blocks.pl
-- tests/scripts/check-names.sh
-- tests/scripts/check-files.py
-- tests/scripts/doxygen.sh
-- cmake -D CMAKE_BUILD_TYPE:String="Check" .
-- make
-- make test
-- programs/test/selftest
-- OSSL_NO_DTLS=1 tests/compat.sh
-- tests/ssl-opt.sh -e '\(DTLS\|SCSV\).*openssl'
-- tests/scripts/test-ref-configs.pl
-- tests/scripts/curves.pl
-- tests/scripts/key-exchanges.pl
+- echo $PATH
+- ls -l /opt/pyenv/shims
+- which python
+- python --version
+- which python3
+- python3 --version
+- which cmake
+- rm `which python3.6` `which python3.7`
+- python3 -c "import sys; sys.stdout.write('.'.join([str(x) for x in sys.version_info[:3]]))"
+- python3.7 -c "import sys; sys.stdout.write('.'.join([str(x) for x in sys.version_info[:3]]))"
+- python3.6 -c "import sys; sys.stdout.write('.'.join([str(x) for x in sys.version_info[:3]]))"
+- cmake --version
+- cmake .
 after_failure:
-- tests/scripts/travis-log-failure.sh
+- cat CMakeCache.txt
 env:
   global:
     - SEED=1
@@ -33,10 +33,3 @@ addons:
     packages:
     - doxygen
     - graphviz
-  coverity_scan:
-    project:
-      name: "ARMmbed/mbedtls"
-    notification_email: support-mbedtls@arm.com
-    build_command_prepend:
-    build_command: make
-    branch_pattern: coverity_scan
